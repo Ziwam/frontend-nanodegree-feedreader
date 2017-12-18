@@ -26,47 +26,84 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
+        // Loops through allFeeds and checks if urls are defined and aren't empty
+        it('have URLs', function() {
+            for(feedURL of allFeeds){
+                expect(feedURL.url).toBeDefined();
+                expect(feedURL.url.length).not.toBe(0);
+            }
+        });
 
-        /* TODO: Write a test that loops through each feed
-         * in the allFeeds object and ensures it has a URL defined
-         * and that the URL is not empty.
-         */
-
-
-        /* TODO: Write a test that loops through each feed
-         * in the allFeeds object and ensures it has a name defined
-         * and that the name is not empty.
-         */
+        // Loops through allFeeds and checks if names are defined and aren't empty
+        it('have Names', function() {
+            for(feedName of allFeeds){
+                expect(feedName.name).toBeDefined();
+                expect(feedName.name.length).not.toBe(0);
+            }
+        });
     });
 
 
-    /* TODO: Write a new test suite named "The menu" */
+   // Tests the visibility of side menu before and after icon clicks.
+    describe('The menu', function() {
+        var menu = $('body');
+        var menuIcon = $('.menu-icon-link');
+        
+        // Checks if body element has "menu-hidden" class.
+        it('is hidden by default', function() {
+            expect(menu.hasClass('menu-hidden')).toBe(true);
+        });
 
-        /* TODO: Write a test that ensures the menu element is
-         * hidden by default. You'll have to analyze the HTML and
-         * the CSS to determine how we're performing the
-         * hiding/showing of the menu element.
-         */
+        it('is shown when icon is clicked', function() {
+            // Triggers menu icon's click funciton
+            menuIcon.click();
+            expect(menu.hasClass('menu-hidden')).not.toBe(true);
+        });
 
-         /* TODO: Write a test that ensures the menu changes
-          * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
-          * clicked and does it hide when clicked again.
-          */
+        it('is hidden when icon is clicked again', function() {
+            menuIcon.click();
+            expect(menu.hasClass('menu-hidden')).toBe(true);
+        });
+    });
 
-    /* TODO: Write a new test suite named "Initial Entries" */
+    // Tests to see if entries are loaded into feed containers.
+    describe('Initial Entries', function() {
+        // Holds parent element to all entries.
+        var container = $('.feed');
 
-        /* TODO: Write a test that ensures when the loadFeed
-         * function is called and completes its work, there is at least
-         * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test will require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
-         */
+        beforeEach(function(done) {
+            // Loads feed with loadFeed().
+            loadFeed(0, function() {
+                // Gets called after loadFeed() is done.
+                done();
+            });
+        });
 
-    /* TODO: Write a new test suite named "New Feed Selection" */
+        it('are loaded into feed containers', function(done) {
+            expect(container.find('.entry')).toBeDefined();
+            done();
+        });
+    })
 
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
-         */
+    // Tests the change of content after loadFeed() is called.
+    describe('New Feed Selection', function() {
+        // Holds the link of the first article after loadFeed() loads.
+        var InitialArticleLink = null;
+        
+        // Gets called after first loadFeed() loads index 0.
+        beforeEach(function(done) {
+            InitialArticleLink = $('.entry-link').attr('href');
+            // Loads new feed with loadFeed() given new index.
+            loadFeed(1, function() {
+                done();
+            });
+        });
+
+        // Compares the link of the first article to the captured article, should not be the same.
+        it('is loaded and causes content to change', function(done) {
+            expect($('.entry-link').attr('href')).not.toBe(InitialArticleLink);
+            done();
+        });
+
+    });
 }());
