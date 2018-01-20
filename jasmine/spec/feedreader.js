@@ -28,18 +28,18 @@ $(function() {
 
         // Loops through allFeeds and checks if urls are defined and aren't empty
         it('have URLs', function() {
-            for(feedURL of allFeeds){
-                expect(feedURL.url).toBeDefined();
-                expect(feedURL.url.length).not.toBe(0);
-            }
+            allFeeds.forEach(function(feed) {
+                expect(feed.url).toBeDefined();
+                expect(feed.url.length).not.toBe(0);
+            });
         });
 
         // Loops through allFeeds and checks if names are defined and aren't empty
         it('have Names', function() {
-            for(feedName of allFeeds){
-                expect(feedName.name).toBeDefined();
-                expect(feedName.name.length).not.toBe(0);
-            }
+            allFeeds.forEach(function(feed) {
+                expect(feed.name).toBeDefined();
+                expect(feed.name.length).not.toBe(0);
+            });
         });
     });
 
@@ -79,30 +79,32 @@ $(function() {
             });
         });
 
-        it('are loaded into feed containers', function(done) {
+        it('are loaded into feed containers', function() {
             expect(container.find('.entry')).toBeDefined();
-            done();
         });
-    })
+    });
 
     // Tests the change of content after loadFeed() is called.
     describe('New Feed Selection', function() {
         // Holds the link of the first article after loadFeed() loads.
         var InitialArticleLink = null;
         
-        // Gets called after first loadFeed() loads index 0.
         beforeEach(function(done) {
-            InitialArticleLink = $('.entry-link').attr('href');
-            // Loads new feed with loadFeed() given new index.
-            loadFeed(1, function() {
-                done();
+            
+            // Loads initial feed of index 0 with loadFeed().
+            loadFeed(0, function() {
+                InitialArticleLink = $('.entry-link').attr('href');
+
+                // Loads new feed with loadFeed() given new index.
+                loadFeed(1, function() {
+                    done();
+                });
             });
         });
 
         // Compares the link of the first article to the captured article, should not be the same.
-        it('is loaded and causes content to change', function(done) {
+        it('is loaded and causes content to change', function() {
             expect($('.entry-link').attr('href')).not.toBe(InitialArticleLink);
-            done();
         });
 
     });
