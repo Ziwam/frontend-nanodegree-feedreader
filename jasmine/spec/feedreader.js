@@ -80,10 +80,9 @@ $(function() {
         });
 
         it('are loaded into feed containers', function() {
-            expect(container.find('.entry')).toBeDefined();
+            expect(container.find('.entry')).toBeGreaterThan(0);
         });
     });
-
     // Tests the change of content after loadFeed() is called.
     describe('New Feed Selection', function() {
         // Holds the link of the first article after loadFeed() loads.
@@ -91,7 +90,7 @@ $(function() {
         
         beforeEach(function(done) {
             
-            // Loads initial feed of index 0 with loadFeed().
+            // Loads initial feed with loadFeedindex 0 
             loadFeed(0, function() {
                 InitialArticleLink = $('.entry-link').attr('href');
 
