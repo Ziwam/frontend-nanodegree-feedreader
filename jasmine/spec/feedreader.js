@@ -80,7 +80,7 @@ $(function() {
         });
 
         it('are loaded into feed containers', function() {
-            expect(container.find('.entry')).toBeGreaterThan(0);
+            expect(container.find('.entry').length).toBeGreaterThan(0);
         });
     });
     // Tests the change of content after loadFeed() is called.
